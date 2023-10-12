@@ -2,7 +2,6 @@ package data
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"strconv"
 	"sync"
@@ -32,12 +31,10 @@ func NewMovieStore() *MovieStore {
 }
 
 func (ms *MovieStore) Lock() {
-	log.Println("Locking...")
 	ms.mu.Lock()
 }
 
 func (ms *MovieStore) Unlock() {
-	log.Println("Unlocking...")
 	ms.mu.Unlock()
 }
 

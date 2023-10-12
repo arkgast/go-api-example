@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,8 +14,9 @@ func GetMovie(c *fiber.Ctx) error {
 
 	movie, err := movieStore.GetMovie(id)
 	if err != nil {
-		log.Printf("Movie with id %s not found", id)
-		return nil
+		errMsg := fmt.Sprintf("Movie with ID: %s not found", id)
+		log.Println(errMsg)
+		return c.Status(fiber.StatusBadRequest).SendString(errMsg)
 	}
 
 	log.Printf("Movie with ID: %s was retrieved successfully", movie.ID)
@@ -24,7 +26,7 @@ func GetMovie(c *fiber.Ctx) error {
 func GetMovies(c *fiber.Ctx) error {
 	movieStore := c.Locals("movieStore").(*data.MovieStore)
 	log.Println("Get movies executed successfully")
-	return c.JSON(movieStore.GetMovies())
+	return c.Status(fiber.StatusOK).JSON(movieStore.GetMovies())
 }
 
 func CreateMovie(c *fiber.Ctx) error {
@@ -32,7 +34,7 @@ func CreateMovie(c *fiber.Ctx) error {
 	movie := movieStore.CreateMovie()
 
 	log.Printf("Movie with ID: %s was created successfully", movie.ID)
-	return c.JSON(movie)
+	return c.Status(fiber.StatusCreated).JSON(movie)
 }
 
 func UpdateMovie(c *fiber.Ctx) error {
@@ -41,12 +43,13 @@ func UpdateMovie(c *fiber.Ctx) error {
 
 	movie, err := movieStore.UpdateMovie(id)
 	if err != nil {
-		log.Printf("Movie with id %s not found", id)
-		return nil
+		errMsg := fmt.Sprintf("Movie with ID: %s not found", id)
+		log.Println(errMsg)
+		return c.Status(fiber.StatusBadRequest).SendString(errMsg)
 	}
 
 	log.Printf("Movie with ID: %s was updated successfully", id)
-	return c.JSON(movie)
+	return c.Status(fiber.StatusNoContent).JSON(movie)
 }
 
 func DeleteMovie(c *fiber.Ctx) error {
@@ -55,8 +58,9 @@ func DeleteMovie(c *fiber.Ctx) error {
 
 	err := movieStore.DeleteMovie(id)
 	if err != nil {
-		log.Panicf("Movie with id %s not found", id)
-		return nil
+		errMsg := fmt.Sprintf("Movie with ID: %s not found", id)
+		log.Println(errMsg)
+		return c.Status(fiber.StatusBadRequest).SendString(errMsg)
 	}
 
 	log.Printf("Movie with ID: %s was deleted successfully", id)
