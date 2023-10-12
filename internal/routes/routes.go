@@ -7,13 +7,8 @@ import (
 	"veloud.com/api/internal/data"
 )
 
-func IndexHandler(c *fiber.Ctx) error {
-	return c.SendString("Hello, World!")
-}
-
 func GetMovie(c *fiber.Ctx) error {
-	params := c.AllParams()
-	id := params["id"]
+	id := c.Params("id")
 
 	movie, err := data.GetMovie(id)
 	if err != nil {

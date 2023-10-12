@@ -49,17 +49,6 @@ func CreateMovie() *Movie {
 	return &newMovie
 }
 
-func DeleteMovie(id string) error {
-	for index, movie := range movies {
-		if movie.ID == id {
-			movies = append(movies[:index], movies[index+1:]...)
-			return nil
-		}
-	}
-
-	return fmt.Errorf("Movie with id %s not found", id)
-}
-
 func UpdateMovie(id string) (*Movie, error) {
 	idx := -1
 	for index, movie := range movies {
@@ -79,4 +68,15 @@ func UpdateMovie(id string) (*Movie, error) {
 	movies[idx] = movie
 
 	return &movies[idx], nil
+}
+
+func DeleteMovie(id string) error {
+	for index, movie := range movies {
+		if movie.ID == id {
+			movies = append(movies[:index], movies[index+1:]...)
+			return nil
+		}
+	}
+
+	return fmt.Errorf("Movie with id %s not found", id)
 }
