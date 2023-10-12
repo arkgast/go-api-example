@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -29,8 +28,13 @@ func GetMovies(c *fiber.Ctx) error {
 }
 
 func CreateMovie(c *fiber.Ctx) error {
+	newMovie := new(data.MovieInput)
+	if err := c.BodyParser(newMovie); err != nil {
+		return err
+	}
+
 	movieStore := c.Locals("movieStore").(*data.MovieStore)
-	movie := movieStore.CreateMovie()
+	movie := movieStore.CreateMovie(*newMovie)
 
 	log.Printf("Movie with ID: %s was created successfully", movie.ID)
 	return c.Status(fiber.StatusCreated).JSON(movie)
@@ -40,7 +44,12 @@ func UpdateMovie(c *fiber.Ctx) error {
 	id := c.Params("id")
 	movieStore := c.Locals("movieStore").(*data.MovieStore)
 
-	movie, err := movieStore.UpdateMovie(id)
+	movieData := new(data.MovieInput)
+	if err := c.BodyParser(movieData); err != nil {
+		return err
+	}
+
+	movie, err := movieStore.UpdateMovie(id, *movieData)
 	if err != nil {
 		log.Println(err.Error())
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())

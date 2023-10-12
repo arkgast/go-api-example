@@ -14,6 +14,12 @@ type Movie struct {
 	Director *Director `json:"director"`
 }
 
+type MovieInput struct {
+	Isbn     string    `json:"isbn"`
+	Title    string    `json:"title"`
+	Director *Director `json:"director"`
+}
+
 type Director struct {
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
@@ -51,29 +57,45 @@ func (ms *MovieStore) GetMovie(id string) (*Movie, error) {
 	return nil, fmt.Errorf("Movie with ID: %s not found", id)
 }
 
-func (ms *MovieStore) CreateMovie() *Movie {
-	newMovie := Movie{
+func (ms *MovieStore) CreateMovie(newMovie MovieInput) *Movie {
+	movie := Movie{
 		ID:    randomNumber(100, 10),
-		Isbn:  randomNumber(10000, 1000),
-		Title: "One",
+		Isbn:  newMovie.Isbn,
+		Title: newMovie.Title,
 		Director: &Director{
-			Firstname: "Name",
-			Lastname:  "Lastname",
+			Firstname: newMovie.Director.Firstname,
+			Lastname:  newMovie.Director.Lastname,
 		},
 	}
 
-	ms.movies[newMovie.ID] = newMovie
+	ms.movies[movie.ID] = movie
 
-	return &newMovie
+	return &movie
 }
 
-func (ms *MovieStore) UpdateMovie(id string) (*Movie, error) {
+func (ms *MovieStore) UpdateMovie(id string, movieInput MovieInput) (*Movie, error) {
 	movie, exists := ms.movies[id]
 	if !exists {
 		return nil, fmt.Errorf("Movie with ID: %s not found", id)
 	}
 
-	movie.Isbn = fmt.Sprintf("%s - updated", movie.Isbn)
+	if movieInput.Isbn != "" {
+		movie.Isbn = movieInput.Isbn
+	}
+
+	if movieInput.Title != "" {
+		movie.Title = movieInput.Title
+	}
+
+	if movieInput.Director != nil {
+		if movieInput.Director.Firstname != "" {
+			movie.Director.Firstname = movieInput.Director.Firstname
+		}
+		if movieInput.Director.Lastname != "" {
+			movie.Director.Lastname = movieInput.Director.Lastname
+		}
+	}
+
 	ms.movies[id] = movie
 
 	return &movie, nil
