@@ -18,6 +18,12 @@ func main() {
 		return c.Next()
 	})
 
+	app.Use(func(c *fiber.Ctx) error {
+		movieStore.Lock()
+		defer movieStore.Unlock()
+		return c.Next()
+	})
+
 	app.Get("/:id", routes.GetMovie)
 	app.Get("/", routes.GetMovies)
 	app.Post("/", routes.CreateMovie)

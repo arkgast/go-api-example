@@ -2,8 +2,10 @@ package data
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"strconv"
+	"sync"
 )
 
 type Movie struct {
@@ -20,12 +22,23 @@ type Director struct {
 
 type MovieStore struct {
 	movies map[string]Movie
+	mu     sync.Mutex
 }
 
 func NewMovieStore() *MovieStore {
 	return &MovieStore{
 		movies: make(map[string]Movie),
 	}
+}
+
+func (ms *MovieStore) Lock() {
+	log.Println("Locking...")
+	ms.mu.Lock()
+}
+
+func (ms *MovieStore) Unlock() {
+	log.Println("Unlocking...")
+	ms.mu.Unlock()
 }
 
 func (ms *MovieStore) GetMovies() map[string]Movie {
