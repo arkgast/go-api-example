@@ -48,7 +48,7 @@ func (ms *MovieStore) GetMovie(id string) (*Movie, error) {
 			return &item, nil
 		}
 	}
-	return nil, fmt.Errorf("Movie with %s not found", id)
+	return nil, fmt.Errorf("Movie with ID: %s not found", id)
 }
 
 func (ms *MovieStore) CreateMovie() *Movie {
@@ -70,7 +70,7 @@ func (ms *MovieStore) CreateMovie() *Movie {
 func (ms *MovieStore) UpdateMovie(id string) (*Movie, error) {
 	movie, exists := ms.movies[id]
 	if !exists {
-		return nil, fmt.Errorf("Movie with id %s not found", id)
+		return nil, fmt.Errorf("Movie with ID: %s not found", id)
 	}
 
 	movie.Isbn = fmt.Sprintf("%s - updated", movie.Isbn)
@@ -82,7 +82,7 @@ func (ms *MovieStore) UpdateMovie(id string) (*Movie, error) {
 func (ms *MovieStore) DeleteMovie(id string) error {
 	_, exists := ms.movies[id]
 	if !exists {
-		return fmt.Errorf("Movie with id %s not found", id)
+		return fmt.Errorf("Movie with ID: %s not found", id)
 	}
 
 	delete(ms.movies, id)

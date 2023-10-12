@@ -14,9 +14,8 @@ func GetMovie(c *fiber.Ctx) error {
 
 	movie, err := movieStore.GetMovie(id)
 	if err != nil {
-		errMsg := fmt.Sprintf("Movie with ID: %s not found", id)
-		log.Println(errMsg)
-		return c.Status(fiber.StatusBadRequest).SendString(errMsg)
+		log.Println(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
 	log.Printf("Movie with ID: %s was retrieved successfully", movie.ID)
@@ -43,9 +42,8 @@ func UpdateMovie(c *fiber.Ctx) error {
 
 	movie, err := movieStore.UpdateMovie(id)
 	if err != nil {
-		errMsg := fmt.Sprintf("Movie with ID: %s not found", id)
-		log.Println(errMsg)
-		return c.Status(fiber.StatusBadRequest).SendString(errMsg)
+		log.Println(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
 	log.Printf("Movie with ID: %s was updated successfully", id)
@@ -58,9 +56,8 @@ func DeleteMovie(c *fiber.Ctx) error {
 
 	err := movieStore.DeleteMovie(id)
 	if err != nil {
-		errMsg := fmt.Sprintf("Movie with ID: %s not found", id)
-		log.Println(errMsg)
-		return c.Status(fiber.StatusBadRequest).SendString(errMsg)
+		log.Println(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
 	log.Printf("Movie with ID: %s was deleted successfully", id)
