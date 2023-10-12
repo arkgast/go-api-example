@@ -35,8 +35,8 @@ func GetMovie(id string) (*Movie, error) {
 
 func CreateMovie() *Movie {
 	newMovie := Movie{
-		ID:    strconv.Itoa(rand.Intn(10)),
-		Isbn:  strconv.Itoa(rand.Intn(1000)),
+		ID:    randomNumber(100, 10),
+		Isbn:  randomNumber(10000, 100),
 		Title: "One",
 		Director: &Director{
 			Firstname: "Name",
@@ -79,4 +79,9 @@ func DeleteMovie(id string) error {
 	}
 
 	return fmt.Errorf("Movie with id %s not found", id)
+}
+
+func randomNumber(max int, min int) string {
+	randNumber := rand.Intn(max-min) + min
+	return strconv.Itoa(randNumber)
 }
