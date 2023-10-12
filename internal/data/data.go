@@ -36,7 +36,7 @@ func GetMovie(id string) (*Movie, error) {
 func CreateMovie() *Movie {
 	newMovie := Movie{
 		ID:    randomNumber(100, 10),
-		Isbn:  randomNumber(10000, 100),
+		Isbn:  randomNumber(10000, 1000),
 		Title: "One",
 		Director: &Director{
 			Firstname: "Name",

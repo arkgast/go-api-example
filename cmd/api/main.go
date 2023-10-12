@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/gofiber/fiber/v2"
 	"veloud.com/api/internal/routes"
 )
@@ -14,5 +16,5 @@ func main() {
 	app.Put("/:id", routes.UpdateMovie)
 	app.Delete("/:id", routes.DeleteMovie)
 
-	app.Listen(":3100")
+	log.Fatal(app.Listen(":3100"))
 }
