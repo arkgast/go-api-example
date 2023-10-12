@@ -9,8 +9,9 @@ import (
 
 func GetMovie(c *fiber.Ctx) error {
 	id := c.Params("id")
+	movieStore := c.Locals("movieStore").(*data.MovieStore)
 
-	movie, err := data.GetMovie(id)
+	movie, err := movieStore.GetMovie(id)
 	if err != nil {
 		log.Printf("Movie with id %s not found", id)
 		return nil
@@ -20,18 +21,21 @@ func GetMovie(c *fiber.Ctx) error {
 }
 
 func GetMovies(c *fiber.Ctx) error {
-	movies := data.GetMovies()
-	return c.JSON(movies)
+	movieStore := c.Locals("movieStore").(*data.MovieStore)
+	return c.JSON(movieStore.GetMovies())
 }
 
 func CreateMovie(c *fiber.Ctx) error {
-	movie := data.CreateMovie()
+	movieStore := c.Locals("movieStore").(*data.MovieStore)
+	movie := movieStore.CreateMovie()
 	return c.JSON(movie)
 }
 
 func UpdateMovie(c *fiber.Ctx) error {
 	id := c.Params("id")
-	movie, err := data.UpdateMovie(id)
+	movieStore := c.Locals("movieStore").(*data.MovieStore)
+
+	movie, err := movieStore.UpdateMovie(id)
 	if err != nil {
 		log.Printf("Movie with id %s not found", id)
 		return nil
@@ -42,10 +46,13 @@ func UpdateMovie(c *fiber.Ctx) error {
 
 func DeleteMovie(c *fiber.Ctx) error {
 	id := c.Params("id")
-	err := data.DeleteMovie(id)
+	movieStore := c.Locals("movieStore").(*data.MovieStore)
+
+	err := movieStore.DeleteMovie(id)
 	if err != nil {
 		log.Panicf("Movie with id %s not found", id)
 		return nil
 	}
+
 	return c.SendStatus(fiber.StatusNoContent)
 }

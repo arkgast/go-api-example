@@ -18,14 +18,22 @@ type Director struct {
 	Lastname  string `json:"lastname"`
 }
 
-var movies []Movie
-
-func GetMovies() []Movie {
-	return movies
+type MovieStore struct {
+	movies map[string]Movie
 }
 
-func GetMovie(id string) (*Movie, error) {
-	for _, item := range movies {
+func NewMovieStore() *MovieStore {
+	return &MovieStore{
+		movies: make(map[string]Movie),
+	}
+}
+
+func (ms *MovieStore) GetMovies() map[string]Movie {
+	return ms.movies
+}
+
+func (ms *MovieStore) GetMovie(id string) (*Movie, error) {
+	for _, item := range ms.movies {
 		if item.ID == id {
 			return &item, nil
 		}
@@ -33,7 +41,7 @@ func GetMovie(id string) (*Movie, error) {
 	return nil, fmt.Errorf("Movie with %s not found", id)
 }
 
-func CreateMovie() *Movie {
+func (ms *MovieStore) CreateMovie() *Movie {
 	newMovie := Movie{
 		ID:    randomNumber(100, 10),
 		Isbn:  randomNumber(10000, 1000),
@@ -44,41 +52,31 @@ func CreateMovie() *Movie {
 		},
 	}
 
-	movies = append(movies, newMovie)
+	ms.movies[newMovie.ID] = newMovie
 
 	return &newMovie
 }
 
-func UpdateMovie(id string) (*Movie, error) {
-	idx := -1
-	for index, movie := range movies {
-		if movie.ID == id {
-			idx = index
-			break
-		}
-	}
-
-	if idx == -1 {
+func (ms *MovieStore) UpdateMovie(id string) (*Movie, error) {
+	movie, exists := ms.movies[id]
+	if !exists {
 		return nil, fmt.Errorf("Movie with id %s not found", id)
 	}
 
-	movie := movies[idx]
 	movie.Isbn = fmt.Sprintf("%s - updated", movie.Isbn)
+	ms.movies[id] = movie
 
-	movies[idx] = movie
-
-	return &movies[idx], nil
+	return &movie, nil
 }
 
-func DeleteMovie(id string) error {
-	for index, movie := range movies {
-		if movie.ID == id {
-			movies = append(movies[:index], movies[index+1:]...)
-			return nil
-		}
+func (ms *MovieStore) DeleteMovie(id string) error {
+	_, exists := ms.movies[id]
+	if !exists {
+		return fmt.Errorf("Movie with id %s not found", id)
 	}
 
-	return fmt.Errorf("Movie with id %s not found", id)
+	delete(ms.movies, id)
+	return nil
 }
 
 func randomNumber(max int, min int) string {
