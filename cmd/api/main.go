@@ -8,7 +8,11 @@ import (
 func main() {
 	app := fiber.New()
 
-	app.Get("/", routes.IndexHandler)
+	app.Get("/:id", routes.GetMovie)
+	app.Get("/", routes.GetMovies)
+	app.Post("/", routes.CreateMovie)
+	app.Put("/:id", routes.UpdateMovie)
+	app.Delete("/:id", routes.DeleteMovie)
 
 	app.Listen(":3100")
 }
