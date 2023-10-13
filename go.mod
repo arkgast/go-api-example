@@ -4,6 +4,7 @@ go 1.21.1
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
+	github.com/bxcodec/faker/v3 v3.8.1 // indirect
 	github.com/gofiber/fiber/v2 v2.49.2 // indirect
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/klauspost/compress v1.16.7 // indirect

@@ -21,8 +21,8 @@ type MovieInput struct {
 }
 
 type Director struct {
-	Firstname string `json:"firstname"`
-	Lastname  string `json:"lastname"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
 }
 
 type MovieStore struct {
@@ -63,8 +63,8 @@ func (ms *MovieStore) CreateMovie(newMovie MovieInput) *Movie {
 		Isbn:  newMovie.Isbn,
 		Title: newMovie.Title,
 		Director: &Director{
-			Firstname: newMovie.Director.Firstname,
-			Lastname:  newMovie.Director.Lastname,
+			FirstName: newMovie.Director.FirstName,
+			LastName:  newMovie.Director.LastName,
 		},
 	}
 
@@ -88,11 +88,11 @@ func (ms *MovieStore) UpdateMovie(id string, movieInput MovieInput) (*Movie, err
 	}
 
 	if movieInput.Director != nil {
-		if movieInput.Director.Firstname != "" {
-			movie.Director.Firstname = movieInput.Director.Firstname
+		if movieInput.Director.FirstName != "" {
+			movie.Director.FirstName = movieInput.Director.FirstName
 		}
-		if movieInput.Director.Lastname != "" {
-			movie.Director.Lastname = movieInput.Director.Lastname
+		if movieInput.Director.LastName != "" {
+			movie.Director.LastName = movieInput.Director.LastName
 		}
 	}
 
