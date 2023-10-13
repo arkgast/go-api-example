@@ -56,7 +56,7 @@ func UpdateMovie(c *fiber.Ctx) error {
 	}
 
 	log.Printf("Movie with ID: %s was updated successfully", id)
-	return c.Status(fiber.StatusNoContent).JSON(movie)
+	return c.Status(fiber.StatusOK).JSON(movie)
 }
 
 func DeleteMovie(c *fiber.Ctx) error {
