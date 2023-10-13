@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
-	"veloud.com/api/internal/data"
+	"veloud.com/api/pkg/data"
 )
 
 func GetMovie(c *fiber.Ctx) error {

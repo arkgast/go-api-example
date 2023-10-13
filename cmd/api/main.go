@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
-	"veloud.com/api/internal/data"
-	"veloud.com/api/internal/routes"
+	"veloud.com/api/pkg/data"
+	"veloud.com/api/pkg/routes"
 )
 
 func main() {
