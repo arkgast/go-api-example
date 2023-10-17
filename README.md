@@ -1,6 +1,6 @@
 # Simple Movie API
 
-## Topics learnt
+## Topics learned
 
 * exporting
 * dependencie management
@@ -13,3 +13,27 @@
 * if statement
 * * and & symbols
 * := and =
+
+## Dependencies
+
+```
+go install github.com/cosmtrek/air@latest
+```
+
+## Execute
+
+```
+make dev
+```
+
+## Build
+
+```
+make build
+```
+
+## Test
+
+```
+make test
+```
